@@ -80,7 +80,7 @@ git gui 调出gui
 <6> git refspec
 
 git config --global alias.[别名] [命令] 为一些命令设置简写别名
-git push --set-upstream origin [分支名] 将本地分支推送的远程 等同git push -u origin [分支名]
+git push --set-upstream origin [分支名] 将本地分支推送的远程 等同git push -u origin [分支名]，远程/本地分支名不同时使用src:dest方式
 远程分支拉取
 1）
 pull只能拉取远程分支索引
@@ -88,6 +88,7 @@ git checkout -b [分支名] origin/[分支名] 本地创建分支并和远程同
 2）
 git checkout --track origin/[分支名] 创建同名本地分支
 远程分支删除
-git 
+git push origin :[远程分支名] 推送空本地分支到远程
+git push origin --delete [远程分支名] 删除远程分支
 
 
