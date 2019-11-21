@@ -1,0 +1,93 @@
+git branch -d [分支名]    删除分支
+git branch -D [分支]      强行删除
+git merge [分支名]        合并分支
+git merge -- no-ff 禁用fast-forward 多出一个CommitID
+
+<1> Git 常用命令
+git branch  查看当前分支
+git branch -v             本分支的最近提交
+git branch [新分支名]        创建分支
+git branch [新分支名] [commit_id]  在某个提交上创建分支
+git branch -m [原分支名] [新分支名]  分支改名
+git checkout [分支]      切换分支
+git checkout -b [新分支名] 创建并切换分支
+
+git add     添加到暂存区（追踪和未追踪）解决冲突标记
+git add . 添加所有文件到暂存区（不要使用*，*会忽略ignore的规则）
+git commit      提交到版本库
+git commit -am ""    等同于 add . + commit  只作用于已纳入版本管理的文件，新加时还是要add
+git log --graph 图形化日志
+
+
+<2> Git 版本回退
+git reset -- hard HEAD^
+git reset --hard  HEAD ~1
+git reset --hard commit_id
+git reflog      查看操作日志
+git reset HEAD [文件名]    将暂存区的提交撤销，放回工作区
+git checkout -- [文件名]   丢弃修改，恢复到暂存区的内容
+
+git checkout [commit_id]   回到之前的某个历史提交，HEAD处于游离状态，这个状态下的修改需要提交后才能切换分支，一般用在在历史版本开分支
+
+git stash save [说明]      分支切换时，有未提交的时候，不能直接切换。用该命令临时保存（紧急切换，并不想提交时）
+git stash list  查看临时保存列表
+git stash pop   临时状态拿出合并，并删除
+git stash apply 临时状态拿出合并，不删除
+git stash apply stash@{编号} 拿出指定状态
+git stash drop stash@{编号} 删除状态
+
+<3> Git 标签与diff
+git tag [标签名]  创建轻量级标签
+git tag -a [标签名] -m [附注信息] 创建附注标签
+git tag -d [标签名] 删除标签
+git tag   查看标签
+git tag  -l [*匹配] 查寻标签
+
+git blame [文件名] 文件修改历史
+
+linux 原生diff
+  diff [源] [目标]
+  diff -u [源] [目标]
+  
+Git 的diff
+1）工作区-暂存区比较
+   git diff  暂存区原始文件 工作区目标文件
+2）工作区-与本地版本比较  版本库原始文件 工作区目标文件
+   git diff [commit_id]  某版本
+   git diff HEAD  最新版本
+3）暂存区-版本库比较  暂存区原始文件 版本库目标文件
+   git diff --cached  比较最新
+   git diff	--cached [commit_id] 某版本
+   
+<4> 远程协作
+push 推送 完整写法 git push origin [src,本地分支]:[dest,远程分支]
+pull 拉取，同时merge  =fetch+merge
+
+git remote add [origin远程别名] [远程地址] 初始化拉取
+git push -u [origin] master  首次推送做关联
+git remote show 显示远程仓库别名 （注意local out of date,提示已经过期，远程有新版本）
+git remote show origin 远程仓库详细信息
+git clone [远程地址] [项目名] 克隆远程仓库
+
+git branch [-av] 查看分支 包括远程
+
+git checkout origin/master 此时处于游离分支，此时需要开分支（不要直接修改提交）
+
+<5> 工具
+gitk  调出gitk
+git gui 调出gui
+
+<6> git refspec
+
+git config --global alias.[别名] [命令] 为一些命令设置简写别名
+git push --set-upstream origin [分支名] 将本地分支推送的远程 等同git push -u origin [分支名]
+远程分支拉取
+1）
+pull只能拉取远程分支索引
+git checkout -b [分支名] origin/[分支名] 本地创建分支并和远程同步
+2）
+git checkout --track origin/[分支名] 创建同名本地分支
+远程分支删除
+git 
+
+
