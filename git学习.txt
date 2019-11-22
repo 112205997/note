@@ -169,5 +169,24 @@ submodule 项目互相依赖的情况
 git cherry-pick commit_id 
 切换到错误修改分支
 reset或checkout 还原
+  可以checkout 某个提交掉创建分支，然后合并
+
+<10> rebase 变基 衍合
+与merge类似
+merge会产生新的提交，指向合并的两个分支
+rebase会把另分支的提交应用到当前分支，修改提交历史，不要在master上使用rebase,而且一般都是本地分支，尚未推送到远程
+注意：不要在共享的分支上操作
+
+git rebase [另一分支]
+
+冲突： 
+解决冲突后继续rebase
+       git rebase -- continue
+恢复到rebase前的状态
+       git rebase -- abort
+冲突时忽略掉本分支的修改，以另一个分支的变更为准，每次忽略一次本分支的冲突
+	   git rebase --skip
+	   
+
 
 
