@@ -27,6 +27,7 @@
 - git commit      提交到版本库
 - git commit -am ""    等同于 add . + commit  只作用于已纳入版本管理的文件，新加时还是要add
 - git log --graph 图形化日志
+  - 退出 按Q键
 - git rm [文件] 删除
 - git rm -f [文件] 强制删除
 - git rm --cached [文件] 从暂存区删除
@@ -64,9 +65,9 @@
 	-   diff -u [源] [目标]
 - ---
 
-  
 - Git 的diff
 - 1）工作区-暂存区比较
+   
    -	git diff  暂存区原始文件 工作区目标文件
 - 2）工作区-与本地版本比较  版本库原始文件 工作区目标文件
    -	git diff [commit_id]  某版本
@@ -135,7 +136,7 @@ submodule 项目互相依赖的情况
     git submodule foreach git pull 拉取所有依赖的更新
 4）更新后再提交
    git push
-   
+
 5）此时clone后，submodule是空的
    git clone [远程parent地址] [项目名]
    git submodule init     子模块初始化
@@ -143,7 +144,7 @@ submodule 项目互相依赖的情况
    git checkout master    子模块切换到主分支
 5）或者执行
    git clone [远程parent地址] [项目名] --recursive
-   
+
 
 - 移除submodule   
    - 1）缓存区移除   
@@ -165,9 +166,9 @@ submodule 项目互相依赖的情况
          - git subtree add --prefix=subtree [远程地址subtree-origin] [分支名master] [--squash 去除commit日志多提交合并一个提交，如果使用，之后pull/push全部都使用]
          - [防止主仓库污染,慎用会影响三方合并]
 	- 3）提交
-   		- git push
+      		- git push
 	- 4）子模块更新
-   		- git subtree pull --prefix=subtree subtree-origin master 
+      		- git subtree pull --prefix=subtree subtree-origin master 
   
 - 在父工程中改子模块的东西
 	- 1）普通的push 是修改parent的项目中的内容
