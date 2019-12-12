@@ -535,15 +535,21 @@ Dockerfile是由一系列命令和参数构成的脚本，这些命令应用于�
 
 
 
-| 命令                                 | 作用                                 |
-| ---------------------------------- | ---------------------------------- |
-| FROM image_name:tag                | 定义了使用哪个基础镜像启动构建流程                  |
-| MAINTAINER user_name               | 声明镜像的创建者                           |
-| ENV key value                      | 设置环境变量 (可以写多条)                     |
-| RUN command                        | 是Dockerfile的核心部分(可以写多条)            |
-| ADD source_dir/file dest_dir/file  | 将宿主机的文件复制到容器内，如果是一个压缩文件，将会在复制后自动解压 |
-| COPY source_dir/file dest_dir/file | 和ADD相似，但是如果有压缩文件并不能解压              |
-| WORKDIR path_dir                   | 设置工作目录                             |
+| 命令                                       | 作用                                                         |
+| ------------------------------------------ | ------------------------------------------------------------ |
+| FROM image_name:tag                        | 定义了使用哪个基础镜像启动构建流程，<br />必须为第一个非注释行。FROM<resository>@<digest> 用Hash指定镜像源 |
+| MAINTAINER user_name                       | 声明镜像的创建者“名称+邮箱”。新版本使用标签LABEL替换该功能<br />LABEL <key>=<Value> |
+| ENV key value 或ENV key=value ...          | 设置环境变量 (可以写多条)，之后的指令可使用 $变量名 或者${变量名:-默认值}，在docker run -e时可以被替换 |
+| RUN command                                | 是Dockerfile的核心部分(可以写多条)，在构建镜像时执行的命令，基础镜像需要支持该命令 |
+| ADD source_dir/file dest_dir/file          | 将宿主机的文件复制到容器内，如果是一个压缩文件，将会在复制后自动解压.并且支持URL的网络路径，url路径的压缩文件不能解压 |
+| COPY source_dir/file dest_dir/file         | 和ADD相似，但是如果有压缩文件并不能解压,复制多个文件到一个目录使用：<br />COPY ["<src>",..."<dest>"] ，src路径只能是Dockerfile文件的子目录，dest建议为绝对路径,否则是WORKDIR指定的目录，注意，复制只是src的子目录，src自身不会复制 |
+| WORKDIR path_dir                           | 设置工作目录，COPY和ADD指令默认使用这个路径，可以设置多个，指令逆序查找匹配该配置 |
+| VOLUME mountpoint 或 VOLUME ["mountpoint"] | 在镜像中创建挂载点目录，这种方式的Source只能指定宿主机的默认目录 |
+| EXPOSE <port> /<protocol> 多个用空格分开   | 为容器设置待暴露端口，随机绑定宿主机的端口,默认TCP协议,不会真正暴露只是指定可以暴露。真正的暴露是使用启动容器命令 -P，即暴露Dockerfile里指定的可暴露端口 |
+| CMD命令（类似RUN）                         | 在容器启动时执行的命令，存在多个的时候 只有最后一个生效;<br />CMD <command>  PID不为1 以“/bin/sh -c”运行  ;<br />CMD ["<executeable>","<param1>","<param2>"] 不是以shell发起的，如果需要 可以用 CMD ["/bin/bash","-c","<executeable>","<param1>"];<br />CMD ["<param1>","<param2>"] 需要结合ENTRYPOINT指令，为其提供默认参数 |
+| ENTRYPOINT（类似CMD）                      | 默认不会被docker run 后的命令覆盖，docker run 后的命令是作为参数传入的 |
+|                                            |                                                              |
+|                                            |                                                              |
 
 ## 6.3 使用脚本创建镜像
 
@@ -581,6 +587,8 @@ ENV PATH $JAVA_HOME/bin:$PATH
 
 ```
 docker build -t='jdk1.8' .
+或
+docker build -t jdk1.8:v0.1 ./
 ```
 
 注意后边的空格和点，不要省略
